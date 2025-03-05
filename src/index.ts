@@ -4,6 +4,7 @@ import { createServer } from "http";
 import cors from "cors";
 import { promises as fs } from "fs";
 import path from "path";
+import { DeckDb } from "./db-interfaces/db-interfaces";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -31,8 +32,7 @@ app.get("/deck", async (req: Request, res: Response) => {
   const pathToDeck = path.resolve(path.join(__dirname, "../deck/deck.json"));
 
   const data = await fs.readFile(pathToDeck, "utf8");
-  const jsonParsedData = JSON.parse(data);
-
+  const jsonParsedData: DeckDb[] = JSON.parse(data);
   res.send(jsonParsedData);
 });
 

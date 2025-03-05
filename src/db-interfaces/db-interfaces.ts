@@ -1,4 +1,4 @@
-interface DeckDb {
+export interface DeckDb {
   name: string;
   cover: string;
   cards: CardBase[];
