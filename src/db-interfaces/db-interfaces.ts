@@ -4,7 +4,7 @@ export interface DeckDb {
   cards: CardBase[];
 }
 
-interface CardBase {
+export interface CardBase {
   id: string;
   name: string;
   image: string;
