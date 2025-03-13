@@ -323,7 +323,10 @@ const rooms: Room[] = [
         ],
       },
     ],
-    battleSpace: [],
+    battleSpace: [
+      { name: "xzxasdads", cards: [], isFaceDownForOponent: false },
+      { name: "Игорь", cards: [], isFaceDownForOponent: false },
+    ],
   },
 ];
 
@@ -359,7 +362,13 @@ export default function registerSocketEvents(io: Server) {
       const room: Room = {
         roomId,
         players: [player],
-        battleSpace: [],
+        battleSpace: [
+          {
+            name: player.name,
+            cards: [],
+            isFaceDownForOponent: false,
+          },
+        ],
       };
 
       rooms.push(room);
@@ -382,7 +391,15 @@ export default function registerSocketEvents(io: Server) {
         discard: [],
         deck: shufeledCards.slice(0, 25),
       };
+
+      const playerInBattleSpace = {
+        name: player.name,
+        cards: [],
+        isFaceDownForOponent: false,
+      };
+
       room?.players.push(player);
+      room?.battleSpace.push(playerInBattleSpace);
       console.dir(room);
 
       io.sockets.in(roomId).emit("game-state-changed", room);
@@ -408,7 +425,7 @@ export default function registerSocketEvents(io: Server) {
       player.deck = player.deck.filter(
         (cardCandidate) => cardCandidate.id !== card.id
       );
-      socket.to(roomId).emit("oponent-performed-action", room);
+      socket.to(roomId).emit("opponent-or-battlespace-changed", room);
     });
 
     socket.on("player-discarded-card", (roomId, name, card) => {
@@ -424,15 +441,89 @@ export default function registerSocketEvents(io: Server) {
       player.hand = player.hand.filter(
         (cardCandidate) => cardCandidate.id !== card.id
       );
-      socket.to(roomId).emit("oponent-performed-action", room);
+      socket.to(roomId).emit("opponent-or-battlespace-changed", room);
     });
+
+    socket.on("player-played-card", (roomId, name, card) => {
+      console.log(card);
+
+      const room = rooms.find((room) => room.roomId === roomId);
+      const player = room?.players.find((playerCandidat) => {
+        return playerCandidat.name === name;
+      });
+      const playerInBattleSpace = room?.battleSpace.find((playerCandidat) => {
+        return playerCandidat.name === name;
+      });
+      if (!player) {
+        console.log("NO PLAYER FOUND");
+        return;
+      }
+      if (!playerInBattleSpace) {
+        console.log("NO PLAYER in battleSpace");
+        return;
+      }
+      playerInBattleSpace.cards.push(card);
+      player.hand = player.hand.filter(
+        (cardCandidate) => cardCandidate.id !== card.id
+      );
+      io.sockets.in(roomId).emit("opponent-or-battlespace-changed", room);
+    });
+
+    socket.on("discarded-all-cards-from-battle-space", (roomId, name) => {
+      const room = rooms.find((room) => room.roomId === roomId);
+      const player = room?.players.find((playerCandidat) => {
+        return playerCandidat.name === name;
+      });
+      const playerInBattleSpace = room?.battleSpace.find((playerCandidat) => {
+        return playerCandidat.name === name;
+      });
+      if (!player) {
+        console.log("NO PLAYER FOUND");
+        return;
+      }
+      if (!playerInBattleSpace) {
+        console.log("NO PLAYER in battleSpace");
+        return;
+      }
+      playerInBattleSpace.cards.forEach((card) => player.discard.push(card));
+      playerInBattleSpace.cards = [];
+      io.sockets.in(roomId).emit("opponent-or-battlespace-changed", room);
+    });
+
+    socket.on(
+      "change-visibility-of-cards-to-opponent",
+      (roomId, name, newVisibility) => {
+        const room = rooms.find((room) => room.roomId === roomId);
+        const player = room?.players.find((playerCandidat) => {
+          return playerCandidat.name === name;
+        });
+        const playerInBattleSpace = room?.battleSpace.find((playerCandidat) => {
+          return playerCandidat.name === name;
+        });
+        if (!player) {
+          console.log("NO PLAYER FOUND");
+          return;
+        }
+        if (!playerInBattleSpace) {
+          console.log("NO PLAYER in battleSpace");
+          return;
+        }
+        playerInBattleSpace.isFaceDownForOponent = newVisibility;
+
+        io.sockets.in(roomId).emit("opponent-or-battlespace-changed", room);
+      }
+    );
   });
 }
 
 interface Room {
   roomId: string;
   players: Player[];
-  battleSpace: { name: string; cards: CardBase[] }[];
+  battleSpace: {
+    name: string;
+    cards: CardBase[];
+    isFaceDownForOponent: boolean;
+  }[];
 }
 
 interface Player {
@@ -440,6 +531,12 @@ interface Player {
   hand: CardBase[];
   discard: CardBase[];
   deck: CardBase[];
+}
+
+interface BattleSpace {
+  name: string;
+  cards: CardBase[];
+  isFaceDownForOponent: boolean;
 }
 
 function shuffleCards(deckOfCards: DeckDb) {
