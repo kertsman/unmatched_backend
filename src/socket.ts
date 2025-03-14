@@ -2,333 +2,334 @@ import { Server } from "socket.io";
 import { getDeckFromFile } from ".";
 import { CardBase, DeckDb } from "./db-interfaces/db-interfaces";
 
-const rooms: Room[] = [
-  {
-    roomId: "7363",
-    players: [
-      {
-        name: "xzxasdads",
-        hand: [
-          {
-            id: "1",
-            name: "ЗАЗЕРКАЛЬЕ",
-            image: "/alice/looking-glass.png",
-          },
-          {
-            id: "2",
-            name: "ЗАЗЕРКАЛЬЕ",
-            image: "/alice/looking-glass.png",
-          },
-          {
-            id: "3",
-            name: "ВКРИВЬ-ВКОСЬ",
-            image: "/alice/snicker-snack.png",
-          },
-          {
-            id: "4",
-            name: "О БРАВНЫЙ ДЕНЬ!",
-            image: "/alice/o-frabjous-day.png",
-          },
-        ],
-        discard: [],
-        deck: [
-          {
-            id: "5",
-            name: "НА ДРУГОЙ СТОРОНЕ ГРИБА",
-            image: "/alice/the-other-side-of-the-mushroom.png",
-          },
-          {
-            id: "6",
-            name: "СЪЕШЬ МЕНЯ",
-            image: "/alice/eat-me.png",
-          },
-          {
-            id: "7",
-            name: "СЪЕШЬ МЕНЯ",
-            image: "/alice/eat-me.png",
-          },
-          {
-            id: "8",
-            name: "Я ОПАЗДЫВАЮ!",
-            image: "/alice/i'm-late-i'm-late.png",
-          },
-          {
-            id: "9",
-            name: "Я ОПАЗДЫВАЮ!",
-            image: "/alice/i'm-late-i'm-late.png",
-          },
-          {
-            id: "10",
-            name: "Я ОПАЗДЫВАЮ!",
-            image: "/alice/i'm-late-i'm-late.png",
-          },
-          {
-            id: "11",
-            name: "ВЫПЕЙ МЕНЯ",
-            image: "/alice/drink-me.png",
-          },
-          {
-            id: "12",
-            name: "ВЫПЕЙ МЕНЯ",
-            image: "/alice/drink-me.png",
-          },
-          {
-            id: "13",
-            name: "КУСАЧАЯ ПАСТЬ",
-            image: "/alice/Jaws That Bite.png",
-          },
-          {
-            id: "14",
-            name: "КУСАЧАЯ ПАСТЬ",
-            image: "/alice/Jaws That Bite.png",
-          },
-          {
-            id: "15",
-            name: "ВПИВАЮЩИЕСЯ КОГТИ",
-            image: "/alice/Claws That Catch.png",
-          },
-          {
-            id: "16",
-            name: "ВПИВАЮЩИЕСЯ КОГТИ",
-            image: "/alice/Claws That Catch.png",
-          },
-          {
-            id: "17",
-            name: "ПЕРЕЛОМНЫЙ МОМЕНТ",
-            image: "/alice/Momentous Shift.png",
-          },
-          {
-            id: "18",
-            name: "ПЕРЕЛОМНЫЙ МОМЕНТ",
-            image: "/alice/Momentous Shift.png",
-          },
-          {
-            id: "19",
-            name: "СТЫЧКА",
-            image: "/alice/Skirmish.png",
-          },
-          {
-            id: "20",
-            name: "СТЫЧКА",
-            image: "/alice/Skirmish.png",
-          },
-          {
-            id: "21",
-            name: "БЕЗУМЕН, КАК ШЛЯПНИК",
-            image: "/alice/Mad as a Hatter.png",
-          },
-          {
-            id: "22",
-            name: "БЕЗУМЕН, КАК ШЛЯПНИК",
-            image: "/alice/Mad as a Hatter.png",
-          },
-          {
-            id: "23",
-            name: "ВРАГ У ВОРОТ",
-            image: "/alice/Manxome Foe.png",
-          },
-          {
-            id: "24",
-            name: "ВРАГ У ВОРОТ",
-            image: "/alice/Manxome Foe.png",
-          },
-          {
-            id: "25",
-            name: "УЛОВКА",
-            image: "/alice/Feint.png",
-          },
-          {
-            id: "26",
-            name: "УЛОВКА",
-            image: "/alice/Feint.png",
-          },
-          {
-            id: "27",
-            name: "УЛОВКА",
-            image: "/alice/Feint.png",
-          },
-          {
-            id: "28",
-            name: "ПЕРЕДЫШКА",
-            image: "/alice/Regroup.png",
-          },
-          {
-            id: "29",
-            name: "ПЕРЕДЫШКА",
-            image: "/alice/Regroup.png",
-          },
-          {
-            id: "30",
-            name: "ПЕРЕДЫШКА",
-            image: "/alice/Regroup.png",
-          },
-        ],
-      },
-      {
-        name: "Игорь",
-        hand: [
-          {
-            id: "1",
-            name: "ЗАЗЕРКАЛЬЕ",
-            image: "/alice/looking-glass.png",
-          },
-          {
-            id: "2",
-            name: "ЗАЗЕРКАЛЬЕ",
-            image: "/alice/looking-glass.png",
-          },
-          {
-            id: "3",
-            name: "ВКРИВЬ-ВКОСЬ",
-            image: "/alice/snicker-snack.png",
-          },
-          {
-            id: "4",
-            name: "О БРАВНЫЙ ДЕНЬ!",
-            image: "/alice/o-frabjous-day.png",
-          },
-        ],
-        discard: [],
-        deck: [
-          {
-            id: "5",
-            name: "НА ДРУГОЙ СТОРОНЕ ГРИБА",
-            image: "/alice/the-other-side-of-the-mushroom.png",
-          },
-          {
-            id: "6",
-            name: "СЪЕШЬ МЕНЯ",
-            image: "/alice/eat-me.png",
-          },
-          {
-            id: "7",
-            name: "СЪЕШЬ МЕНЯ",
-            image: "/alice/eat-me.png",
-          },
-          {
-            id: "8",
-            name: "Я ОПАЗДЫВАЮ!",
-            image: "/alice/i'm-late-i'm-late.png",
-          },
-          {
-            id: "9",
-            name: "Я ОПАЗДЫВАЮ!",
-            image: "/alice/i'm-late-i'm-late.png",
-          },
-          {
-            id: "10",
-            name: "Я ОПАЗДЫВАЮ!",
-            image: "/alice/i'm-late-i'm-late.png",
-          },
-          {
-            id: "11",
-            name: "ВЫПЕЙ МЕНЯ",
-            image: "/alice/drink-me.png",
-          },
-          {
-            id: "12",
-            name: "ВЫПЕЙ МЕНЯ",
-            image: "/alice/drink-me.png",
-          },
-          {
-            id: "13",
-            name: "КУСАЧАЯ ПАСТЬ",
-            image: "/alice/Jaws That Bite.png",
-          },
-          {
-            id: "14",
-            name: "КУСАЧАЯ ПАСТЬ",
-            image: "/alice/Jaws That Bite.png",
-          },
-          {
-            id: "15",
-            name: "ВПИВАЮЩИЕСЯ КОГТИ",
-            image: "/alice/Claws That Catch.png",
-          },
-          {
-            id: "16",
-            name: "ВПИВАЮЩИЕСЯ КОГТИ",
-            image: "/alice/Claws That Catch.png",
-          },
-          {
-            id: "17",
-            name: "ПЕРЕЛОМНЫЙ МОМЕНТ",
-            image: "/alice/Momentous Shift.png",
-          },
-          {
-            id: "18",
-            name: "ПЕРЕЛОМНЫЙ МОМЕНТ",
-            image: "/alice/Momentous Shift.png",
-          },
-          {
-            id: "19",
-            name: "СТЫЧКА",
-            image: "/alice/Skirmish.png",
-          },
-          {
-            id: "20",
-            name: "СТЫЧКА",
-            image: "/alice/Skirmish.png",
-          },
-          {
-            id: "21",
-            name: "БЕЗУМЕН, КАК ШЛЯПНИК",
-            image: "/alice/Mad as a Hatter.png",
-          },
-          {
-            id: "22",
-            name: "БЕЗУМЕН, КАК ШЛЯПНИК",
-            image: "/alice/Mad as a Hatter.png",
-          },
-          {
-            id: "23",
-            name: "ВРАГ У ВОРОТ",
-            image: "/alice/Manxome Foe.png",
-          },
-          {
-            id: "24",
-            name: "ВРАГ У ВОРОТ",
-            image: "/alice/Manxome Foe.png",
-          },
-          {
-            id: "25",
-            name: "УЛОВКА",
-            image: "/alice/Feint.png",
-          },
-          {
-            id: "26",
-            name: "УЛОВКА",
-            image: "/alice/Feint.png",
-          },
-          {
-            id: "27",
-            name: "УЛОВКА",
-            image: "/alice/Feint.png",
-          },
-          {
-            id: "28",
-            name: "ПЕРЕДЫШКА",
-            image: "/alice/Regroup.png",
-          },
-          {
-            id: "29",
-            name: "ПЕРЕДЫШКА",
-            image: "/alice/Regroup.png",
-          },
-          {
-            id: "30",
-            name: "ПЕРЕДЫШКА",
-            image: "/alice/Regroup.png",
-          },
-        ],
-      },
-    ],
-    battleSpace: [
-      { name: "xzxasdads", cards: [], isFaceDownForOponent: false },
-      { name: "Игорь", cards: [], isFaceDownForOponent: false },
-    ],
-  },
-];
+// const rooms: Room[] = [
+//   {
+//     roomId: "7363",
+//     players: [
+//       {
+//         name: "xzxasdads",
+//         hand: [
+//           {
+//             id: "1",
+//             name: "ЗАЗЕРКАЛЬЕ",
+//             image: "/alice/looking-glass.png",
+//           },
+//           {
+//             id: "2",
+//             name: "ЗАЗЕРКАЛЬЕ",
+//             image: "/alice/looking-glass.png",
+//           },
+//           {
+//             id: "3",
+//             name: "ВКРИВЬ-ВКОСЬ",
+//             image: "/alice/snicker-snack.png",
+//           },
+//           {
+//             id: "4",
+//             name: "О БРАВНЫЙ ДЕНЬ!",
+//             image: "/alice/o-frabjous-day.png",
+//           },
+//         ],
+//         discard: [],
+//         deck: [
+//           {
+//             id: "5",
+//             name: "НА ДРУГОЙ СТОРОНЕ ГРИБА",
+//             image: "/alice/the-other-side-of-the-mushroom.png",
+//           },
+//           {
+//             id: "6",
+//             name: "СЪЕШЬ МЕНЯ",
+//             image: "/alice/eat-me.png",
+//           },
+//           {
+//             id: "7",
+//             name: "СЪЕШЬ МЕНЯ",
+//             image: "/alice/eat-me.png",
+//           },
+//           {
+//             id: "8",
+//             name: "Я ОПАЗДЫВАЮ!",
+//             image: "/alice/i'm-late-i'm-late.png",
+//           },
+//           {
+//             id: "9",
+//             name: "Я ОПАЗДЫВАЮ!",
+//             image: "/alice/i'm-late-i'm-late.png",
+//           },
+//           {
+//             id: "10",
+//             name: "Я ОПАЗДЫВАЮ!",
+//             image: "/alice/i'm-late-i'm-late.png",
+//           },
+//           {
+//             id: "11",
+//             name: "ВЫПЕЙ МЕНЯ",
+//             image: "/alice/drink-me.png",
+//           },
+//           {
+//             id: "12",
+//             name: "ВЫПЕЙ МЕНЯ",
+//             image: "/alice/drink-me.png",
+//           },
+//           {
+//             id: "13",
+//             name: "КУСАЧАЯ ПАСТЬ",
+//             image: "/alice/Jaws That Bite.png",
+//           },
+//           {
+//             id: "14",
+//             name: "КУСАЧАЯ ПАСТЬ",
+//             image: "/alice/Jaws That Bite.png",
+//           },
+//           {
+//             id: "15",
+//             name: "ВПИВАЮЩИЕСЯ КОГТИ",
+//             image: "/alice/Claws That Catch.png",
+//           },
+//           {
+//             id: "16",
+//             name: "ВПИВАЮЩИЕСЯ КОГТИ",
+//             image: "/alice/Claws That Catch.png",
+//           },
+//           {
+//             id: "17",
+//             name: "ПЕРЕЛОМНЫЙ МОМЕНТ",
+//             image: "/alice/Momentous Shift.png",
+//           },
+//           {
+//             id: "18",
+//             name: "ПЕРЕЛОМНЫЙ МОМЕНТ",
+//             image: "/alice/Momentous Shift.png",
+//           },
+//           {
+//             id: "19",
+//             name: "СТЫЧКА",
+//             image: "/alice/Skirmish.png",
+//           },
+//           {
+//             id: "20",
+//             name: "СТЫЧКА",
+//             image: "/alice/Skirmish.png",
+//           },
+//           {
+//             id: "21",
+//             name: "БЕЗУМЕН, КАК ШЛЯПНИК",
+//             image: "/alice/Mad as a Hatter.png",
+//           },
+//           {
+//             id: "22",
+//             name: "БЕЗУМЕН, КАК ШЛЯПНИК",
+//             image: "/alice/Mad as a Hatter.png",
+//           },
+//           {
+//             id: "23",
+//             name: "ВРАГ У ВОРОТ",
+//             image: "/alice/Manxome Foe.png",
+//           },
+//           {
+//             id: "24",
+//             name: "ВРАГ У ВОРОТ",
+//             image: "/alice/Manxome Foe.png",
+//           },
+//           {
+//             id: "25",
+//             name: "УЛОВКА",
+//             image: "/alice/Feint.png",
+//           },
+//           {
+//             id: "26",
+//             name: "УЛОВКА",
+//             image: "/alice/Feint.png",
+//           },
+//           {
+//             id: "27",
+//             name: "УЛОВКА",
+//             image: "/alice/Feint.png",
+//           },
+//           {
+//             id: "28",
+//             name: "ПЕРЕДЫШКА",
+//             image: "/alice/Regroup.png",
+//           },
+//           {
+//             id: "29",
+//             name: "ПЕРЕДЫШКА",
+//             image: "/alice/Regroup.png",
+//           },
+//           {
+//             id: "30",
+//             name: "ПЕРЕДЫШКА",
+//             image: "/alice/Regroup.png",
+//           },
+//         ],
+//       },
+//       {
+//         name: "Игорь",
+//         hand: [
+//           {
+//             id: "1",
+//             name: "ЗАЗЕРКАЛЬЕ",
+//             image: "/alice/looking-glass.png",
+//           },
+//           {
+//             id: "2",
+//             name: "ЗАЗЕРКАЛЬЕ",
+//             image: "/alice/looking-glass.png",
+//           },
+//           {
+//             id: "3",
+//             name: "ВКРИВЬ-ВКОСЬ",
+//             image: "/alice/snicker-snack.png",
+//           },
+//           {
+//             id: "4",
+//             name: "О БРАВНЫЙ ДЕНЬ!",
+//             image: "/alice/o-frabjous-day.png",
+//           },
+//         ],
+//         discard: [],
+//         deck: [
+//           {
+//             id: "5",
+//             name: "НА ДРУГОЙ СТОРОНЕ ГРИБА",
+//             image: "/alice/the-other-side-of-the-mushroom.png",
+//           },
+//           {
+//             id: "6",
+//             name: "СЪЕШЬ МЕНЯ",
+//             image: "/alice/eat-me.png",
+//           },
+//           {
+//             id: "7",
+//             name: "СЪЕШЬ МЕНЯ",
+//             image: "/alice/eat-me.png",
+//           },
+//           {
+//             id: "8",
+//             name: "Я ОПАЗДЫВАЮ!",
+//             image: "/alice/i'm-late-i'm-late.png",
+//           },
+//           {
+//             id: "9",
+//             name: "Я ОПАЗДЫВАЮ!",
+//             image: "/alice/i'm-late-i'm-late.png",
+//           },
+//           {
+//             id: "10",
+//             name: "Я ОПАЗДЫВАЮ!",
+//             image: "/alice/i'm-late-i'm-late.png",
+//           },
+//           {
+//             id: "11",
+//             name: "ВЫПЕЙ МЕНЯ",
+//             image: "/alice/drink-me.png",
+//           },
+//           {
+//             id: "12",
+//             name: "ВЫПЕЙ МЕНЯ",
+//             image: "/alice/drink-me.png",
+//           },
+//           {
+//             id: "13",
+//             name: "КУСАЧАЯ ПАСТЬ",
+//             image: "/alice/Jaws That Bite.png",
+//           },
+//           {
+//             id: "14",
+//             name: "КУСАЧАЯ ПАСТЬ",
+//             image: "/alice/Jaws That Bite.png",
+//           },
+//           {
+//             id: "15",
+//             name: "ВПИВАЮЩИЕСЯ КОГТИ",
+//             image: "/alice/Claws That Catch.png",
+//           },
+//           {
+//             id: "16",
+//             name: "ВПИВАЮЩИЕСЯ КОГТИ",
+//             image: "/alice/Claws That Catch.png",
+//           },
+//           {
+//             id: "17",
+//             name: "ПЕРЕЛОМНЫЙ МОМЕНТ",
+//             image: "/alice/Momentous Shift.png",
+//           },
+//           {
+//             id: "18",
+//             name: "ПЕРЕЛОМНЫЙ МОМЕНТ",
+//             image: "/alice/Momentous Shift.png",
+//           },
+//           {
+//             id: "19",
+//             name: "СТЫЧКА",
+//             image: "/alice/Skirmish.png",
+//           },
+//           {
+//             id: "20",
+//             name: "СТЫЧКА",
+//             image: "/alice/Skirmish.png",
+//           },
+//           {
+//             id: "21",
+//             name: "БЕЗУМЕН, КАК ШЛЯПНИК",
+//             image: "/alice/Mad as a Hatter.png",
+//           },
+//           {
+//             id: "22",
+//             name: "БЕЗУМЕН, КАК ШЛЯПНИК",
+//             image: "/alice/Mad as a Hatter.png",
+//           },
+//           {
+//             id: "23",
+//             name: "ВРАГ У ВОРОТ",
+//             image: "/alice/Manxome Foe.png",
+//           },
+//           {
+//             id: "24",
+//             name: "ВРАГ У ВОРОТ",
+//             image: "/alice/Manxome Foe.png",
+//           },
+//           {
+//             id: "25",
+//             name: "УЛОВКА",
+//             image: "/alice/Feint.png",
+//           },
+//           {
+//             id: "26",
+//             name: "УЛОВКА",
+//             image: "/alice/Feint.png",
+//           },
+//           {
+//             id: "27",
+//             name: "УЛОВКА",
+//             image: "/alice/Feint.png",
+//           },
+//           {
+//             id: "28",
+//             name: "ПЕРЕДЫШКА",
+//             image: "/alice/Regroup.png",
+//           },
+//           {
+//             id: "29",
+//             name: "ПЕРЕДЫШКА",
+//             image: "/alice/Regroup.png",
+//           },
+//           {
+//             id: "30",
+//             name: "ПЕРЕДЫШКА",
+//             image: "/alice/Regroup.png",
+//           },
+//         ],
+//       },
+//     ],
+//     battleSpace: [
+//       { name: "xzxasdads", cards: [], isFaceDownForOponent: false },
+//       { name: "Игорь", cards: [], isFaceDownForOponent: false },
+//     ],
+//   },
+// ];
+const rooms: Room[] = [];
 
 setInterval(() => {
   console.log(rooms);
@@ -493,6 +494,10 @@ export default function registerSocketEvents(io: Server) {
     socket.on(
       "change-visibility-of-cards-to-opponent",
       (roomId, name, newVisibility) => {
+        console.log(roomId);
+        console.log(name);
+        console.log(newVisibility);
+
         const room = rooms.find((room) => room.roomId === roomId);
         const player = room?.players.find((playerCandidat) => {
           return playerCandidat.name === name;
